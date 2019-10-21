@@ -1,0 +1,255 @@
+<div ng-cloak class="ng-cloak" ng-init="initialize()">
+
+    <div class="row">
+        <div class="col-12">
+            <h1>Agregar facturas a conciliar</h1>
+        </div>
+    </div>
+
+    <div class="row grid-margin">
+        <div class="col-12">
+            
+            <form name="formsInput" ng-submit="Guardar()" novalidate>
+
+                <div class="row" ng-init="initialize();">
+                    <div class="col-12 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-1">
+
+                                        <img ng-src="{{header.PhotoString != ''?header.PhotoString:$root.folderimages+'avatar_male.svg'}}"
+                                             class="rounded-circle"
+                                             alt="{{ header.Cliente}}"
+                                             width="64">
+
+                                    </div>
+                                    <div class="col-5">
+                                        <label>Convenio</label>
+                                        <h3>{{header.Cliente}}</h3>
+                                    </div>
+                                    <div class="col-2">
+                                        <label>Fecha</label>
+                                        <p>{{header.Fecha | jsonDate : 'dd/MM/yyyy' }}</p>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <label>Concepto</label>
+                                        <p>{{header.Concepto}}</p>
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label>Buscar</label>
+                                                <input ng-model="busqueda"
+                                                       class="form-control ng-pristine ng-untouched ng-valid ng-empty"
+                                                       type="text"
+                                                       placeholder="Buscar por el No. de factura" style="">
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Desde</label>
+                                                <date-picker date="Fecha_Inicial"
+                                                             ng-model="Fecha_Inicial"
+                                                             disabled="false"
+                                                             name="Fecha_Inicial"
+                                                             placeholder="Desde"
+                                                             showbotton="true"
+                                                             cssclass="form-control">
+                                                </date-picker>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Hasta</label>
+                                                <date-picker date="Fecha_Final"
+                                                             ng-model="Fecha_Final"
+                                                             disabled="false"
+                                                             name="Fecha_Final"
+                                                             placeholder="Hasta"
+                                                             showbotton="true"
+                                                             cssclass="form-control">
+                                                </date-picker>
+                                            </div>
+                                            <div class="col-2 text-right">
+                                                <label class="text-right">...</label>
+
+                                                <button ng-disabled="formsearch.$invalid" type="button" class="btn btn-primary btn-block pull-right" ng-click="get(Id_Convenio,busqueda, 10)">
+                                                    <i class="icon-magnifier mx-0"></i>
+                                                    <span class="">Buscar</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="col-12 mt-3" ng-repeat="item in items">
+                                                <div class="card card-inverse-secondary">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-1">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input ng-model="CheckAll"
+                                                                           ng-checked="CheckAll"
+                                                                           ng-click="ClickCheckedAll(CheckAll, item.Id_Reclamacion, item);"
+                                                                           type="checkbox"
+                                                                           class="custom-control-input">
+                                                                    <span class="custom-control-indicator"></span>
+                                                                    <span class="custom-control-description"></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label>Reclamación</label>
+                                                                <h3>{{item.Numero_Reclamacion}}</h3>
+                                                            </div>
+                                                            <div class="col text-right">
+                                                                <label>Cant. Facturas</label>
+                                                                <p>{{item.Cantidad_Facturas}}</p>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label>Fecha</label>
+                                                                <p>{{item.Fecha | jsonDate : 'dd/MM/yyyy' }}</p>
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <button type="button"
+                                                                        class="btn social-btn btn-light btn-rounded"
+                                                                        data-toggle="collapse"
+                                                                        data-target="#collapseExample-{{$index}}"
+                                                                        aria-expanded="false"
+                                                                        aria-controls="collapseReq">
+                                                                    <i class="icon-arrow-down"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="collapse" id="collapseExample-{{$index}}">
+                                                            <div class="col-12">
+                                                                <ul class="list-group list-group-flush"
+                                                                    ng-repeat="d in item.Detalles"
+                                                                    ng-init="d.Pagado = d.Pagado <= 0? d.Reclamado : d.Pagado">
+                                                                    <li class="list-group-item">
+                                                                        <div class="row" ng-if="$index == 0">
+                                                                            <div class="col"></div>
+                                                                            <div class="col">Número factura</div>
+                                                                            <div class="col">Paciente</div>
+                                                                            
+                                                                            <div class="col text-right">Pagado</div>
+                                                                            <div class="col text-right">Reclamado</div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <label class="custom-control custom-checkbox">
+                                                                                    <input ng-model="d.Checked"
+                                                                                           ng-checked="d.Checked"
+                                                                                           type="checkbox"
+                                                                                           class="custom-control-input">
+                                                                                    <span class="custom-control-indicator"></span>
+                                                                                    <span class="custom-control-description"></span>
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="col" title="Numero de factura">
+                                                                                <p>{{d.Numero_Factura}}</p>
+                                                                            </div>
+                                                                            <div class="col" title="Paciente">
+                                                                                <p>{{d.Paciente}}{{(d.Numero_Afiliado !== undefined && d.Numero_Afiliado !== '')? '-' + d.Numero_Afiliado : '' }}{{(d.Numero_Autorizacion !== undefined && d.Numero_Autorizacion !== '')? '-' + d.Numero_Autorizacion : ''}}</p>
+                                                                            </div>                                                                           
+                                                                            <div class="col text-right" title="Pagado">
+                                                                                <p>{{d.Pagado | number:2}}</p>
+                                                                            </div>
+                                                                            <div class="col text-right" title="Reclamado">
+                                                                                <p>{{d.Reclamado | number:2}}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+
+                                                                </ul>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 mt-3" ng-if="items.length<=0">
+                                                <div class="col-12 text-center">
+                                                    <p class="lead text-muted">No hay registros disponibles</p>
+                                                    <p class="text-muted">
+                                                        Por favor seleccionar el rango de fecha que deseas, para agregar las facturas reclamadas y dar clic en el botón buscar.
+                                                    </p>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <button ng-disabled="Cargarmasdesable" class="btn btn-light btn-block btn-lg" ng-click="GetFacturasMas(TextFacturaSearch,10)">Cargar más...</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-6">
+                        <a href="">
+                            <button type="button"
+                                    class="btn btn-danger btn-lg"
+                                    ng-click="$ctrl.cancel();">
+                                Cancelar
+                            </button>
+                        </a>
+                    </div>
+                    <div class="col-6 text-right">
+                        <button type="button"
+                                class="btn btn-primary btn-lg"
+                                ng-disabled="items.length <= 0"
+                                ng-click="$ctrl.save();">
+                            Agregar facturas
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+
+    <script>
+
+        function showFileName() {
+            var fil = document.getElementById("myFile");
+            alert(fil.value);
+        }
+
+        function buscar(x) {
+            x.click();
+        };
+        function test(sender, receiver) {
+            var value = sender.value;
+            receiver.val(value + "");
+            console.log(receiver);
+        };
+
+        var inps = document.querySelectorAll('input');
+        [].forEach.call(inps, function (inp) {
+            inp.onchange = function (e) {
+                console.log(this.files);
+
+            };
+        });
+
+
+
+    </script>
+
+
+</div>
