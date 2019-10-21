@@ -5,6 +5,12 @@ const StationsSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  address: {
+    type: String
+  },
+  contact: {
+    type: String
+  },
   active: {
     type: Boolean,
     required: true
