@@ -25,7 +25,6 @@ router.get("/", auth, async (req, res) => {
 router.post(
   "/",
   [
-    auth,
     [
       check("name", "Nombre es requerido")
         .not()

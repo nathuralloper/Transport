@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator/check");
 
-const Routes = require("../../models/Routes");
-const Provinces = require("../../models/Provinces");
+const Driver = require("../../models/Drivers");
 
 const auth = require("../../middleware/auth");
 
@@ -12,10 +11,7 @@ const auth = require("../../middleware/auth");
 // @access  Public
 router.get("/", async (req, res) => {
   try {
-    const _result = await Routes.find()
-      .sort({ date: -1 })
-      .populate("destination_province", ["name"])
-      .populate("origin_province", ["name"]);
+    const _result = await Driver.find().sort({ date: -1 });
 
     res.json(_result);
   } catch (err) {
@@ -29,7 +25,7 @@ router.get("/", async (req, res) => {
 // @access  Public
 router.get("/:id", async (req, res) => {
   try {
-    const _result = await Routes.findOne({ _id: req.params.id });
+    const _result = await Driver.findOne({ _id: req.params.id });
     res.json(_result);
   } catch (err) {
     console.log(err);
@@ -43,13 +39,17 @@ router.get("/:id", async (req, res) => {
 router.post(
   "/",
   [
-    check("name", "Nombre es requerido")
+    check("fistname", "Nombre es requerido")
       .not()
       .isEmpty(),
-    check("origin_province", "La provincia origen es requerido")
+    check("lastname", "Apellido es requerido")
+      .not()
+      .isEmpty()
+      .not(),
+    check("address", "Dirección es requerida")
       .not()
       .isEmpty(),
-    check("destination_province", "La provincia destino es requerido")
+    check("identification_number", "Número de identificación es requerido")
       .not()
       .isEmpty()
   ],
@@ -61,26 +61,26 @@ router.post(
 
     const {
       _id,
-      name,
-      origin_province,
-      destination_province,
-      active,
-      stations
+      fistname,
+      lastname,
+      address,
+      identification_number,
+      active
     } = req.body;
 
     const routeFields = {
       _id,
-      name,
-      origin_province,
-      destination_province,
-      active,
-      stations
+      fistname,
+      lastname,
+      address,
+      identification_number,
+      active
     };
 
     try {
-      let _route = new Routes(routeFields);
-      await _route.save();
-      return res.json(_route);
+      let _result = new Driver(routeFields);
+      await _result.save();
+      return res.json(_result);
     } catch (err) {
       console.log(err);
       res.status(500).send("Server error");
@@ -94,43 +94,47 @@ router.post(
 router.put(
   "/:id",
   [
-    auth,
     [
-      check("name", "Nombre es requerido")
+      check("fistname", "Nombre es requerido")
         .not()
         .isEmpty(),
-      check("origin_province", "La provincia origen es requerido")
-        .not()
-        .isEmpty(),
-      check("destination_province", "La provincia destino es requerido")
+      check("lastname", "Apellido es requerido")
         .not()
         .isEmpty()
+        .not(),
+      check("address", "Dirección es requerida")
+        .isEmpty()
+        .not(),
+      check(
+        "identification_number",
+        "Número de identificación es requerido"
+      ).isEmpty()
     ]
   ],
   async (req, res) => {
     const {
-      name,
-      origin_province,
-      destination_province,
-      active,
-      stations
+      fistname,
+      lastname,
+      address,
+      identification_number,
+      active
     } = req.body;
 
     try {
-      let _route = await Routes.findOne({ _id: req.params.id });
-      if (_route) {
-        _route.name = name;
-        _route.origin_province = origin_province;
-        _route.destination_province = destination_province;
-        _route.active = active;
-        _route.stations = stations;
+      let _result = await Driver.findOne({ _id: req.params.id });
+      if (_result) {
+        _result.fistname = fistname;
+        _result.lastname = lastname;
+        _result.address = address;
+        _result.identification_number = identification_number;
+        _result.active = active;
         res.json(_route);
       } else {
         res.status(400).json({
           errors: [
             {
               msg:
-                "Ups hubo un error al intentar actualizar la información de la ruta"
+                "Ups hubo un error al intentar actualizar la información de la estacion"
             }
           ]
         });
@@ -144,19 +148,19 @@ router.put(
 
 router.delete("/:id", auth, async (req, res) => {
   try {
-    const _result = await Routes.findById(req.params.id);
+    const _result = await Driver.findById(req.params.id);
 
     if (!_result) {
-      return res.status(404).json({ msg: "La ruta no existe" });
+      return res.status(404).json({ msg: "El chofer no existe" });
     }
 
     await _result.remove();
 
-    res.json({ msg: "Ruta eliminada" });
+    res.json({ msg: "Chofer eliminado" });
   } catch (err) {
     console.error(err.message);
     if (err.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Ruta no existe" });
+      return res.status(404).json({ msg: "El chofer no existe" });
     }
     res.status(500).send("Server Error");
   }

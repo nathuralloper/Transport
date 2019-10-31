@@ -8,7 +8,11 @@ const Navbar = ({ auth: { isAuthenticated } }) => {
   const _navbar = (
     <div className="app-header header-shadow">
       <div className="app-header__logo">
-        <div className="logo-src"></div>
+        <div className="">
+          <center>
+            <h5>TransportOnline</h5>
+          </center>
+        </div>
         <div className="header__pane ml-auto"></div>
       </div>
       <div className="app-header__mobile-menu">
@@ -54,19 +58,19 @@ const Navbar = ({ auth: { isAuthenticated } }) => {
             <li className="nav-item">
               <Link to={"/"} className="nav-link">
                 <i className="nav-link-icon fa fa-database"> </i>
-                Statistics
+                Estadistica
               </Link>
             </li>
             <li className="btn-group nav-item">
               <Link to={"/"} className="nav-link">
                 <i className="nav-link-icon fa fa-edit"></i>
-                Projects
+                Aplicaciones
               </Link>
             </li>
             <li className="dropdown nav-item">
               <Link to={"/"} class="nav-link">
                 <i className="nav-link-icon fa fa-cog"></i>
-                Settings
+                Configuraciones
               </Link>
             </li>
           </ul>
