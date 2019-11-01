@@ -2,9 +2,9 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../../action/auth";
 
-const Navbar = ({ auth: { isAuthenticated } }) => {
-  isAuthenticated = true;
+const Navbar = ({ auth: { isAuthenticated }, logout }) => {
   const _navbar = (
     <div className="app-header header-shadow">
       <div className="app-header__logo">
@@ -62,10 +62,13 @@ const Navbar = ({ auth: { isAuthenticated } }) => {
               </Link>
             </li>
             <li className="btn-group nav-item">
-              <Link to={"/"} className="nav-link">
-                <i className="nav-link-icon fa fa-edit"></i>
-                Aplicaciones
-              </Link>
+              <button
+                type="button"
+                onClick={() => logout()}
+                className="mt-2 btn btn-primary"
+              >
+                Cerrar sesion
+              </button>
             </li>
             <li className="dropdown nav-item">
               <Link to={"/"} class="nav-link">
@@ -113,11 +116,15 @@ const Navbar = ({ auth: { isAuthenticated } }) => {
 };
 
 Navbar.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  logout: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(
+  mapStateToProps,
+  { logout }
+)(Navbar);

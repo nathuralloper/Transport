@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 const Sidebar = ({ auth: { isAuthenticated } }) => {
-  isAuthenticated = true;
+  console.log(isAuthenticated);
   const _sidebar = (
     <div className="app-sidebar sidebar-shadow">
       <div className="app-header__logo">

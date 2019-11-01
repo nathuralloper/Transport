@@ -1,6 +1,12 @@
 import axios from "axios";
 import { setAlert } from "./alert";
-import { LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERROR } from "./types";
+import {
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  USER_LOADED,
+  AUTH_ERROR,
+  LOGOUT_SUCESSS
+} from "./types";
 import setAuthToken from "../utils/setAuthToken";
 
 //Load User
@@ -30,8 +36,6 @@ export const login = ({ email, password }) => async dispatch => {
       "Content-Type": "application/json"
     }
   };
-  console.log(email);
-  console.log(password);
   const body = JSON.stringify({ email, password });
   console.log(body);
   try {
@@ -45,4 +49,8 @@ export const login = ({ email, password }) => async dispatch => {
 
     dispatch({ type: LOGIN_FAIL });
   }
+};
+
+export const logout = () => async dispatch => {
+  dispatch({ type: LOGOUT_SUCESSS });
 };

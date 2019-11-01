@@ -6,6 +6,8 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR";
 
+export const LOGOUT_SUCESSS = "LOGOUT_SUCESSS";
+
 //Routing
 export const ROUTES_CREATE = "ROUTES_CREATE";
 export const ERROR_CREATING_ROUTE = "ERROR_CREATING_ROUTE";
