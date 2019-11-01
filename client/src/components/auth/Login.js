@@ -3,14 +3,28 @@ import { Redirect, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../../action/auth";
+import InputGroup from "../common/InputGroup";
+import validateLoginInput from "../../validation/login";
 
 const Login = ({ login, isAuthenticated }) => {
+  var _errors = {};
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
 
+  const [error, setError] = useState({});
+
   const { email, password } = formData;
+
+  const isValid = () => {
+    const { errors, isValid } = validateLoginInput(formData);
+    if (!isValid) {
+      setError(errors);
+    }
+
+    return isValid;
+  };
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,7 +32,10 @@ const Login = ({ login, isAuthenticated }) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    login({ email, password });
+
+    if (isValid()) {
+      login({ email, password });
+    }
   };
 
   //Redirect if logged in
@@ -42,33 +59,35 @@ const Login = ({ login, isAuthenticated }) => {
 
               <div className="divider row"></div>
               <div>
-                <form onSubmit={e => onSubmit(e)}>
+                <form
+                  onSubmit={e => onSubmit(e)}
+                  className="needs-validation"
+                  novalidate
+                >
                   <div className="form-row">
                     <div className="col-md-6">
                       <div className="position-relative form-group">
                         <label>Correo Electronico</label>
-                        <input
+                        <InputGroup
                           name="email"
-                          id="exampleEmail"
                           placeholder="Introduzca su correo electronico..."
-                          type="email"
+                          type="text"
                           onChange={e => onChange(e)}
                           value={email}
-                          className="form-control"
+                          error={error.email}
                         />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="position-relative form-group">
                         <label className="">Contraseña</label>
-                        <input
+                        <InputGroup
                           name="password"
-                          id="examplePassword"
                           placeholder="Introduzca su contraseña..."
                           type="password"
                           onChange={e => onChange(e)}
                           value={password}
-                          className="form-control"
+                          error={error.password}
                         />
                       </div>
                     </div>
