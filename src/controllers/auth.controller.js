@@ -5,15 +5,15 @@ class AuthController {
     _authService = AuthService;
   }
 
-  async singUp(req, res) {
+  async signUp(req, res) {
     const { body } = req;
-    const createdUser = await _authService.singUp(body);
+    const createdUser = await _authService.signUp(body);
     return res.status(201).send(createdUser);
   }
 
-  async singIn(req, res) {
+  async signIn(req, res) {
     const { body } = req;
-    const creds = await _authService.singIn(body);
+    const creds = await _authService.signIn(body);
     return res.send(creds);
   }
 }

@@ -3,6 +3,7 @@ let _user = null;
 
 class UserRepository extends BaseRepository {
   constructor({ User }) {
+    console.log(11111, User);
     _user = User;
     super(User);
   }

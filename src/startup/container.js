@@ -1,24 +1,43 @@
 const { createContainer, asClass, asValue, asFunction } = require("awilix");
 
-//config
+//  config
 const config = require("../config");
 const app = require(".");
 
-//Routes
-const { AuthRoutes, UserRoutes } = require("../routes/index.routes");
+// services
+const {
+  AuthService,
+  UserService,
+  BusService,
+  DriverService,
+} = require("../services");
+
+// controllers
+const {
+  AuthController,
+  UserController,
+  BusController,
+  DriverController,
+} = require("../controllers");
+
+// routes
+const {
+  AuthRoutes,
+  UserRoutes,
+  BusRoutes,
+  DriverRoutes,
+} = require("../routes/index.routes");
 const Routes = require("../routes");
 
-//Services
-const { AuthService, UserService } = require("../services");
-
-//Repositories
-const { UserRepository } = require("../repositories");
-
-//Models
+// models
 const { Bus, Driver, User } = require("../models");
 
-//Controllers
-const { AuthController, UserController } = require("../controllers");
+// repositories
+const {
+  UserRepository,
+  BusRepository,
+  DriverRepository,
+} = require("../repositories");
 
 const container = createContainer();
 
@@ -29,15 +48,24 @@ container
     config: asValue(config),
   })
   .register({
-    UserRepository: asClass(UserRepository).singleton(),
+    UserService: asClass(UserService).singleton(),
+    AuthService: asClass(AuthService).singleton(),
+    BusService: asClass(BusService).singleton(),
+    DriverService: asClass(DriverService).singleton(),
   })
   .register({
-    AuthService: asClass(AuthService).singleton(),
-    UserService: asClass(UserService).singleton(),
+    UserController: asClass(UserController.bind(UserController)).singleton(),
+    AuthController: asClass(AuthController.bind(AuthController)).singleton(),
+    BusController: asClass(BusController.bind(BusController)).singleton(),
+    DriverController: asClass(
+      DriverController.bind(DriverController)
+    ).singleton(),
   })
   .register({
     UserRoutes: asFunction(UserRoutes).singleton(),
     AuthRoutes: asFunction(AuthRoutes).singleton(),
+    BusRoutes: asFunction(BusRoutes).singleton(),
+    DriverRoutes: asFunction(DriverRoutes).singleton(),
   })
   .register({
     User: asValue(User),
@@ -45,8 +73,9 @@ container
     Bus: asValue(Bus),
   })
   .register({
-    UserController: asClass(UserController.bind(UserController)).singleton(),
-    AuthController: asClass(AuthController.bind(AuthController)).singleton(),
+    UserRepository: asClass(UserRepository).singleton(),
+    BusRepository: asClass(BusRepository).singleton(),
+    DriverRepository: asClass(DriverRepository).singleton(),
   });
 
 module.exports = container;

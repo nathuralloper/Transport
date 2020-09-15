@@ -3,8 +3,8 @@ const { Router } = require("express");
 module.exports = function ({ AuthController }) {
   const router = Router();
 
-  router.post("/singin", AuthController.singIn);
-  router.post("/singup", AuthController.singUp);
+  router.post("/signIn", AuthController.signIn);
+  router.post("/signUp", AuthController.signUp);
 
   return router;
 };

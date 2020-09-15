@@ -3,11 +3,12 @@ let _userRepository = null;
 
 class UserService extends BaseService {
   constructor({ UserRepository }) {
-    super(UserRepository);
+    console.log(22222, UserRepository);
     _userRepository = UserRepository;
+    super(UserRepository);
   }
 
-  async getUsername(username) {
+  async getUserByUsername(username) {
     return await _userRepository.getUsername(username);
   }
 }
