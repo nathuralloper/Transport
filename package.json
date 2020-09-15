@@ -4,24 +4,31 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon server",
+    "server": "nodemon index",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run index\" \"npm run client\""
   },
   "author": "Gregory Sánchez",
   "license": "MIT",
   "dependencies": {
+    "awilix": "^4.2.6",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
     "config": "^3.2.2",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
     "express-validator": "^6.2.0",
+    "helmet": "^4.1.1",
     "jsonwebtoken": "^8.5.1",
+    "memory-cache": "^0.2.0",
     "mongoose": "^5.7.3",
     "react-select": "^3.0.8"
   },
   "devDependencies": {
     "concurrently": "^4.1.2",
+    "dotenv": "^8.2.0",
     "nodemon": "^1.19.3"
   }
 }
