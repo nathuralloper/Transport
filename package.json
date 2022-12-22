@@ -21,7 +21,7 @@
     "express-async-errors": "^3.1.1",
     "express-validator": "^6.2.0",
     "helmet": "^4.1.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "memory-cache": "^0.2.0",
     "mongoose": "^5.7.3",
     "react-select": "^3.0.8"
